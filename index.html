@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lorphic — Digital Marketing Agency</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+
+<style>
+/* =========================================
+   RESET & VARIABLES
+========================================= */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --teal:      #00BCD4;
+  --teal-dim:  rgba(0,188,212,0.10);
+  --teal-glow: rgba(0,188,212,0.22);
+  --black:     #080808;
+  --white:     #ffffff;
+  --g700:      #3a3a3a;
+  --g500:      #787878;
+  --g300:      #c2c2c2;
+  --g100:      #efefef;
+  --fd: 'Syne', sans-serif;
+  --fb: 'DM Sans', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--fb);
+  background: var(--white);
+  color: var(--black);
+  overflow-x: hidden;
+  cursor: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* =========================================
+   CUSTOM CURSOR
+========================================= */
+#cdot {
+  position: fixed; top: 0; left: 0;
+  width: 7px; height: 7px;
+  background: var(--teal);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10001;
+  transform: translate(-50%,-50%);
+}
+#cring {
+  position: fixed; top: 0; left: 0;
+  width: 36px; height: 36px;
+  border: 1.5px solid rgba(0,188,212,0.65);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-50%,-50%);
+  transition: width .4s cubic-bezier(.16,1,.3,1),
+              height .4s cubic-bezier(.16,1,.3,1),
+              opacity .4s;
+}
+#cring.big { width: 62px; height: 62px; opacity: .3; }
+
+/* =========================================
+   NAVIGATION
+========================================= */
+#nav {
+  position: fixed; inset: 0 0 auto 0;
+  z-index: 500;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.35rem 5vw;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border-bottom: 1px solid transparent;
+  transition: border-color .3s, box-shadow .3s;
+}
+#nav.stuck {
+  border-color: rgba(0,0,0,0.055);
+  box-shadow: 0 4px 44px rgba(0,0,0,0.05);
+}
+.logo {
+  font-family: var(--fd);
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -.028em;
+  color: var(--black);
+  text-decoration: none;
+}
+.logo em { color: var(--teal); font-style: normal; }
+
+.nav-links { list-style: none; display: flex; gap: 2.5rem; }
+.nav-links a {
+  font-size: .77rem; font-weight: 500;
+  letter-spacing: .09em; text-transform: uppercase;
+  color: var(--g500); text-decoration: none;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--black); }
+
+.nav-btn {
+  font-family: var(--fb);
+  font-size: .8rem; font-weight: 600; letter-spacing: .04em;
+  text-decoration: none;
+  color: #fff; background: var(--black);
+  padding: .6rem 1.4rem;
+  display: inline-flex; align-items: center; gap: .5rem;
+  transition: background .25s, transform .25s;
+}
+.nav-btn:hover { background: var(--teal); transform: translateY(-2px); }
+.nav-btn svg { transition: transform .25s; }
+.nav-btn:hover svg { transform: translateX(3px); }
+
+/* =========================================
+   HERO
+========================================= */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: grid; align-items: center;
+  padding: 10rem 5vw 7rem;
+  overflow: hidden;
+}
+
+/* Gradient mesh orbs */
+.mesh {
+  position: absolute; inset: 0; z-index: 0;
+}
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  will-change: transform;
+}
+.orb-a {
+  width: 780px; height: 780px;
+  top: -260px; right: -140px;
+  background: radial-gradient(circle, rgba(0,188,212,.11) 0%, transparent 65%);
+  animation: fA 14s ease-in-out infinite;
+}
+.orb-b {
+  width: 520px; height: 520px;
+  bottom: -80px; left: 4%;
+  background: radial-gradient(circle, rgba(0,188,212,.07) 0%, transparent 65%);
+  animation: fB 18s ease-in-out infinite;
+}
+.orb-c {
+  width: 360px; height: 360px;
+  top: 38%; left: 44%;
+  background: radial-gradient(circle, rgba(0,188,212,.05) 0%, transparent 65%);
+  animation: fC 11s ease-in-out infinite;
+}
+@keyframes fA {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33%     { transform: translate(-38px,50px) scale(1.06); }
+  66%     { transform: translate(28px,-28px) scale(.96); }
+}
+@keyframes fB {
+  0%,100% { transform: translate(0,0); }
+  50%     { transform: translate(48px,-36px) scale(1.1); }
+}
+@keyframes fC {
+  0%,100% { transform: translate(-50%,0) scale(1); }
+  50%     { transform: translate(-50%,-28px) scale(1.18); }
+}
+
+/* SVG fractal noise */
+.hero-noise {
+  position: absolute; inset: 0; z-index: 1;
+  opacity: .028;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 300px 300px;
+}
+
+/* Dot grid */
+.hero-dots {
+  position: absolute; inset: 0; z-index: 1;
+  opacity: .032;
+  background-image: radial-gradient(circle, var(--black) 1px, transparent 1px);
+  background-size: 34px 34px;
+}
+
+.hero-inner { position: relative; z-index: 2; }
+
+/* Label — starts hidden, revealed by GSAP */
+.hero-label {
+  display: inline-flex; align-items: center; gap: .75rem;
+  font-size: .68rem; font-weight: 600;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 2.5rem;
+  opacity: 0;
+}
+.hero-label::before {
+  content: ''; display: block;
+  width: 2rem; height: 1px; background: var(--teal);
+}
+
+/* Headline */
+.hero-h1 {
+  font-family: var(--fd);
+  font-size: clamp(4rem, 9.8vw, 8.75rem);
+  font-weight: 800;
+  letter-spacing: -.044em;
+  line-height: .91;
+  color: var(--black);
+  margin-bottom: 2.5rem;
+}
+.h1-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: .07em;
+}
+.h1-word {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+.h1-teal { color: var(--teal); position: relative; }
+.h1-teal::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: .05em;
+  width: 0; height: 3px;
+  background: var(--teal); border-radius: 2px;
+}
+.h1-teal.ul-on::after {
+  animation: ulDraw .9s cubic-bezier(.16,1,.3,1) forwards;
+}
+@keyframes ulDraw { to { width: 100%; } }
+
+.hero-sub {
+  font-size: clamp(.95rem, 1.4vw, 1.175rem);
+  font-weight: 300; line-height: 1.8;
+  color: var(--g500); max-width: 520px;
+  margin-bottom: 3.5rem;
+  opacity: 0;
+}
+
+.hero-btns {
+  display: flex; align-items: center; gap: 2rem;
+  opacity: 0;
+}
+
+/* ── Buttons ── */
+.btn-solid {
+  display: inline-flex; align-items: center; gap: .625rem;
+  font-family: var(--fb);
+  font-size: .9rem; font-weight: 600;
+  text-decoration: none; color: #fff;
+  background: var(--teal);
+  padding: .95rem 2.1rem;
+  position: relative; overflow: hidden;
+  transition: transform .4s cubic-bezier(.16,1,.3,1), box-shadow .4s;
+}
+.btn-solid::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,.18), transparent 55%);
+  opacity: 0; transition: opacity .3s;
+}
+.btn-solid:hover { transform: translateY(-4px); box-shadow: 0 20px 56px var(--teal-glow); }
+.btn-solid:hover::before { opacity: 1; }
+.btn-solid .ba { transition: transform .3s; }
+.btn-solid:hover .ba { transform: translateX(4px); }
+
+.btn-outline {
+  display: inline-flex; align-items: center; gap: .5rem;
+  font-family: var(--fb);
+  font-size: .9rem; font-weight: 500;
+  text-decoration: none; color: var(--black);
+}
+.btn-outline .bt { position: relative; }
+.btn-outline .bt::after {
+  content: ''; position: absolute;
+  left: 0; bottom: -2px;
+  width: 0; height: 1px; background: var(--teal);
+  transition: width .3s;
+}
+.btn-outline:hover { color: var(--teal); }
+.btn-outline:hover .bt::after { width: 100%; }
+.btn-outline .ba { transition: transform .3s; }
+.btn-outline:hover .ba { transform: translateX(4px); }
+
+/* Hero stats */
+.hero-stats {
+  position: absolute; right: 5vw; bottom: 8vh; z-index: 2;
+  display: flex; flex-direction: column; gap: 2rem;
+  opacity: 0;
+}
+.stat { text-align: right; }
+.stat-n {
+  font-family: var(--fd);
+  font-size: 2.5rem; font-weight: 800;
+  letter-spacing: -.045em; line-height: 1;
+  color: var(--black);
+}
+.stat-n sup { color: var(--teal); font-size: 1.05rem; }
+.stat-l {
+  font-size: .67rem; font-weight: 500;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--g300); margin-top: .2rem;
+}
+
+/* Scroll cue */
+.scroll-cue {
+  position: absolute; left: 5vw; bottom: 2.5rem; z-index: 2;
+  display: flex; align-items: center; gap: 1rem;
+  opacity: 0;
+}
+.sc-line {
+  width: 40px; height: 1px;
+  background: var(--g300);
+  position: relative; overflow: hidden;
+}
+.sc-line::after {
+  content: ''; position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: var(--teal);
+  animation: scan 2.2s ease-in-out infinite 2s;
+}
+@keyframes scan { to { left: 200%; } }
+.sc-txt {
+  font-size: .62rem; font-weight: 600;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--g300);
+}
+
+/* =========================================
+   TICKER
+========================================= */
+.ticker {
+  overflow: hidden;
+  border-top: 1px solid var(--g100);
+  border-bottom: 1px solid var(--g100);
+  padding: 1.1rem 0; user-select: none;
+}
+.ticker-track {
+  display: flex; gap: 0;
+  animation: tick 30s linear infinite;
+  width: max-content;
+}
+.ticker-track:hover { animation-play-state: paused; }
+.t-item {
+  display: inline-flex; align-items: center; gap: 1.75rem;
+  padding-right: 1.75rem;
+  font-family: var(--fd);
+  font-size: .71rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: var(--g300); flex-shrink: 0; white-space: nowrap;
+  transition: color .2s;
+}
+.ticker-track:hover .t-item { color: var(--g500); }
+.t-dot {
+  width: 4px; height: 4px;
+  background: var(--teal); border-radius: 50%; flex-shrink: 0;
+}
+@keyframes tick { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* =========================================
+   SERVICES
+========================================= */
+.services { padding: 9rem 5vw; }
+
+.srv-head {
+  display: flex; justify-content: space-between;
+  align-items: flex-end; gap: 2rem;
+  margin-bottom: 4.5rem;
+}
+
+.eyebrow {
+  display: inline-flex; align-items: center; gap: .625rem;
+  font-size: .68rem; font-weight: 600;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 1.25rem;
+}
+.eyebrow::before {
+  content: ''; display: inline-block;
+  width: 1.5rem; height: 1px; background: var(--teal);
+}
+
+.sec-title {
+  font-family: var(--fd);
+  font-size: clamp(2.2rem, 4.4vw, 3.7rem);
+  font-weight: 800; letter-spacing: -.038em;
+  line-height: 1.04; color: var(--black);
+}
+.sec-title em { color: var(--teal); font-style: normal; }
+
+.srv-intro {
+  max-width: 310px;
+  font-size: .875rem; color: var(--g500);
+  line-height: 1.82; font-weight: 300;
+}
+
+.srv-grid {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  border: 1px solid var(--g100);
+}
+
+.srv-card {
+  padding: 2.75rem 2.25rem;
+  border-right: 1px solid var(--g100);
+  position: relative; overflow: hidden;
+  transition: transform .55s cubic-bezier(.16,1,.3,1),
+              box-shadow .55s cubic-bezier(.16,1,.3,1);
+  will-change: transform;
+}
+.srv-card:last-child { border-right: none; }
+
+/* Teal inner glow */
+.srv-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(145deg, rgba(0,188,212,.055) 0%, transparent 58%);
+  opacity: 0; transition: opacity .45s;
+}
+/* Bottom accent bar */
+.srv-card::after {
+  content: ''; position: absolute;
+  bottom: 0; left: 0;
+  width: 0; height: 2px; background: var(--teal);
+  transition: width .55s cubic-bezier(.16,1,.3,1);
+}
+.srv-card:hover {
+  transform: translateY(-13px);
+  box-shadow: 0 30px 72px rgba(0,188,212,.12), 0 6px 20px rgba(0,0,0,.05);
+  z-index: 2;
+}
+.srv-card:hover::before { opacity: 1; }
+.srv-card:hover::after  { width: 100%; }
+
+.srv-num {
+  display: block;
+  font-family: var(--fd); font-size: .6rem; font-weight: 700;
+  letter-spacing: .12em; color: var(--g300); margin-bottom: 2rem;
+}
+
+.srv-icon {
+  width: 50px; height: 50px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--teal-dim); color: var(--teal);
+  margin-bottom: 1.75rem; border-radius: 2px;
+  transition: background .4s, color .4s,
+              transform .5s cubic-bezier(.16,1,.3,1);
+}
+.srv-icon svg { width: 20px; height: 20px; }
+.srv-card:hover .srv-icon {
+  background: var(--teal); color: #fff;
+  transform: scale(1.07) rotate(-4deg);
+}
+
+.srv-name {
+  font-family: var(--fd);
+  font-size: 1.18rem; font-weight: 700;
+  letter-spacing: -.02em; line-height: 1.25;
+  color: var(--black); margin-bottom: .875rem;
+}
+.srv-desc {
+  font-size: .845rem; font-weight: 300;
+  line-height: 1.8; color: var(--g500);
+}
+.srv-more {
+  display: inline-flex; align-items: center; gap: .375rem;
+  font-size: .68rem; font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--teal); text-decoration: none;
+  margin-top: 1.75rem;
+  opacity: 0; transform: translateY(10px);
+  transition: opacity .3s, transform .3s, gap .2s;
+}
+.srv-card:hover .srv-more { opacity: 1; transform: translateY(0); }
+.srv-more:hover { gap: .6rem; }
+
+/* =========================================
+   WHY LORPHIC
+========================================= */
+.why { background: var(--black); padding: 9rem 5vw; }
+
+.why .eyebrow { color: rgba(0,188,212,.85); }
+.why .eyebrow::before { background: rgba(0,188,212,.85); }
+.why .sec-title { color: #fff; max-width: 600px; }
+
+.why-head { margin-bottom: 5rem; }
+
+.why-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: rgba(255,255,255,.06);
+}
+
+.why-card {
+  background: var(--black); padding: 3.5rem 3rem;
+  position: relative; overflow: hidden;
+  transition: background .3s;
+}
+.why-card:hover { background: #0d0d0d; }
+
+.why-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; height: 1px; width: 0;
+  background: var(--teal);
+  transition: width .65s cubic-bezier(.16,1,.3,1);
+}
+.why-card:hover::before { width: 100%; }
+
+.why-n {
+  font-family: var(--fd);
+  font-size: 3.8rem; font-weight: 800;
+  letter-spacing: -.052em; line-height: 1;
+  color: rgba(0,188,212,.07);
+  margin-bottom: 2rem;
+  transition: color .3s;
+}
+.why-card:hover .why-n { color: rgba(0,188,212,.15); }
+
+.why-ct {
+  font-family: var(--fd);
+  font-size: 1.2rem; font-weight: 700;
+  letter-spacing: -.02em; line-height: 1.3;
+  color: #fff; margin-bottom: 1rem;
+}
+.why-cd {
+  font-size: .875rem; font-weight: 300;
+  line-height: 1.84; color: rgba(255,255,255,.36);
+}
+
+/* =========================================
+   CTA SECTION
+========================================= */
+.cta-sec {
+  padding: 11rem 5vw;
+  background: var(--white);
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+.cta-sec::before {
+  content: ''; position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 90vw; height: 90vh;
+  background: radial-gradient(ellipse at center, rgba(0,188,212,.065) 0%, transparent 68%);
+  pointer-events: none;
+}
+.cta-in { position: relative; z-index: 1; }
+
+.cta-eyebrow {
+  display: inline-block;
+  font-size: .68rem; font-weight: 600;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 2rem;
+}
+.cta-title {
+  font-family: var(--fd);
+  font-size: clamp(3.5rem, 9vw, 8rem);
+  font-weight: 800; letter-spacing: -.046em;
+  line-height: .9; color: var(--black);
+  margin-bottom: 2rem;
+}
+.cta-title em { color: var(--teal); font-style: normal; }
+.cta-desc {
+  font-size: 1rem; font-weight: 300; line-height: 1.78;
+  color: var(--g500); max-width: 450px;
+  margin: 0 auto 3.75rem;
+}
+
+/* =========================================
+   FOOTER
+========================================= */
+footer {
+  background: var(--black); padding: 2.5rem 5vw;
+  display: flex; align-items: center; justify-content: space-between;
+  border-top: 1px solid rgba(255,255,255,.04);
+}
+.f-logo {
+  font-family: var(--fd); font-size: 1.1rem;
+  font-weight: 800; letter-spacing: -.025em; color: #fff;
+}
+.f-logo em { color: var(--teal); font-style: normal; }
+.f-copy { font-size: .735rem; color: rgba(255,255,255,.22); font-weight: 300; }
+.f-links { list-style: none; display: flex; gap: 1.75rem; }
+.f-links a {
+  font-size: .735rem; color: rgba(255,255,255,.3);
+  text-decoration: none; transition: color .2s;
+}
+.f-links a:hover { color: var(--teal); }
+
+/* =========================================
+   SCROLLBAR
+========================================= */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: #fff; }
+::-webkit-scrollbar-thumb { background: var(--teal); }
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+@media (max-width: 1080px) {
+  .srv-grid { grid-template-columns: repeat(2,1fr); }
+  .srv-head { flex-direction: column; align-items: flex-start; }
+  .srv-intro { max-width: 100%; }
+  .hero-stats { display: none; }
+  .nav-links { display: none; }
+}
+@media (max-width: 640px) {
+  .srv-grid { grid-template-columns: 1fr; }
+  .srv-card { border-right: none; border-bottom: 1px solid var(--g100); }
+  .why-grid { grid-template-columns: 1fr; }
+  footer { flex-direction: column; gap: 1.25rem; text-align: center; }
+  .cta-sec { padding: 7rem 5vw; }
+  .hero { padding: 8rem 5vw 5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ░░ CURSOR ░░ -->
+<div id="cdot"></div>
+<div id="cring"></div>
+
+<!-- ░░ NAV ░░ -->
+<nav id="nav">
+  <a href="#" class="logo">Lorph<em>ic</em></a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-btn">
+    Start a Project
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
+</nav>
+
+<!-- ░░ HERO ░░ -->
+<section class="hero" id="home">
+  <div class="mesh">
+    <div class="orb orb-a"></div>
+    <div class="orb orb-b"></div>
+    <div class="orb orb-c"></div>
+  </div>
+  <div class="hero-noise"></div>
+  <div class="hero-dots"></div>
+
+  <div class="hero-inner">
+    <div class="hero-label" id="hLabel">Digital Marketing Agency</div>
+
+    <h1 class="hero-h1" id="hH1">
+      <span class="h1-line">
+        <span class="h1-word">We&nbsp;</span><span class="h1-word">build</span>
+      </span>
+      <span class="h1-line">
+        <span class="h1-word h1-teal" id="tw">brands&nbsp;</span><span class="h1-word">that</span>
+      </span>
+      <span class="h1-line">
+        <span class="h1-word">move&nbsp;</span><span class="h1-word">markets.</span>
+      </span>
+    </h1>
+
+    <p class="hero-sub" id="hSub">
+      Full-spectrum digital marketing — from search visibility to paid performance — precision-engineered to grow your business with measurable impact.
+    </p>
+
+    <div class="hero-btns" id="hBtns">
+      <a href="#contact" class="btn-solid">
+        <span>Get Started</span>
+        <svg class="ba" width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="#services" class="btn-outline">
+        <span class="bt">Explore Services</span>
+        <svg class="ba" width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-stats" id="hStats">
+    <div class="stat">
+      <div class="stat-n">12<sup>×</sup></div>
+      <div class="stat-l">Avg. ROI</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n">200<sup>+</sup></div>
+      <div class="stat-l">Brands Scaled</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n">98<sup>%</sup></div>
+      <div class="stat-l">Retention Rate</div>
+    </div>
+  </div>
+
+  <div class="scroll-cue" id="hScroll">
+    <div class="sc-line"></div>
+    <span class="sc-txt">Scroll to explore</span>
+  </div>
+</section>
+
+<!-- ░░ TICKER ░░ -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span class="t-item">SEO Optimization<span class="t-dot"></span></span>
+    <span class="t-item">Content Strategy<span class="t-dot"></span></span>
+    <span class="t-item">Paid Media<span class="t-dot"></span></span>
+    <span class="t-item">Web Development<span class="t-dot"></span></span>
+    <span class="t-item">Brand Growth<span class="t-dot"></span></span>
+    <span class="t-item">Performance Analytics<span class="t-dot"></span></span>
+    <span class="t-item">Digital Marketing<span class="t-dot"></span></span>
+    <span class="t-item">SEO Optimization<span class="t-dot"></span></span>
+    <span class="t-item">Content Strategy<span class="t-dot"></span></span>
+    <span class="t-item">Paid Media<span class="t-dot"></span></span>
+    <span class="t-item">Web Development<span class="t-dot"></span></span>
+    <span class="t-item">Brand Growth<span class="t-dot"></span></span>
+    <span class="t-item">Performance Analytics<span class="t-dot"></span></span>
+    <span class="t-item">Digital Marketing<span class="t-dot"></span></span>
+  </div>
+</div>
+
+<!-- ░░ SERVICES ░░ -->
+<section class="services" id="services">
+  <div class="srv-head">
+    <div>
+      <div class="eyebrow gsap-up">What We Do</div>
+      <h2 class="sec-title gsap-up">Services built for<br><em>real results</em></h2>
+    </div>
+    <p class="srv-intro gsap-up">
+      Every service is precision-tuned to deliver measurable outcomes — not just activity, but compounding growth.
+    </p>
+  </div>
+
+  <div class="srv-grid">
+    <div class="srv-card gsap-card">
+      <span class="srv-num">01</span>
+      <div class="srv-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.35-4.35"/>
+          <path d="M11 8v6M8 11h6"/>
+        </svg>
+      </div>
+      <h3 class="srv-name">Search Engine Optimization</h3>
+      <p class="srv-desc">Dominate organic rankings with data-driven strategy — technical excellence, content authority, and link equity that compounds over time.</p>
+      <a href="#" class="srv-more">Explore →</a>
+    </div>
+
+    <div class="srv-card gsap-card">
+      <span class="srv-num">02</span>
+      <div class="srv-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+          <path d="M12 20h9"/>
+          <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+        </svg>
+      </div>
+      <h3 class="srv-name">Content Marketing</h3>
+      <p class="srv-desc">Stories that convert. Editorial content, thought leadership, and campaign creative that builds authority and drives audience action.</p>
+      <a href="#" class="srv-more">Explore →</a>
+    </div>
+
+    <div class="srv-card gsap-card">
+      <span class="srv-num">03</span>
+      <div class="srv-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+        </svg>
+      </div>
+      <h3 class="srv-name">Paid Advertising</h3>
+      <p class="srv-desc">Performance-first media buying across Google, Meta, and beyond — laser-targeted campaigns that transform spend into scalable revenue.</p>
+      <a href="#" class="srv-more">Explore →</a>
+    </div>
+
+    <div class="srv-card gsap-card">
+      <span class="srv-num">04</span>
+      <div class="srv-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+          <polyline points="16 18 22 12 16 6"/>
+          <polyline points="8 6 2 12 8 18"/>
+        </svg>
+      </div>
+      <h3 class="srv-name">Web Development</h3>
+      <p class="srv-desc">High-converting experiences built for speed, SEO, and user delight — from landing pages to full-scale digital products.</p>
+      <a href="#" class="srv-more">Explore →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ WHY LORPHIC ░░ -->
+<section class="why" id="why">
+  <div class="why-head">
+    <div class="eyebrow gsap-up">Why Lorphic</div>
+    <h2 class="sec-title gsap-up">The edge that separates<br><em>good</em> from legendary</h2>
+  </div>
+
+  <div class="why-grid">
+    <div class="why-card gsap-why">
+      <div class="why-n">01</div>
+      <h3 class="why-ct">Strategy Before Execution</h3>
+      <p class="why-cd">We don't start with tactics — we start with your business goals. Every campaign is rooted in competitive intelligence that makes every dollar earn its place.</p>
+    </div>
+    <div class="why-card gsap-why">
+      <div class="why-n">02</div>
+      <h3 class="why-ct">Data That Drives Decisions</h3>
+      <p class="why-cd">Gut feelings are for amateurs. We build measurement frameworks that give you complete clarity on what's working, what's not, and exactly what to do next.</p>
+    </div>
+    <div class="why-card gsap-why">
+      <div class="why-n">03</div>
+      <h3 class="why-ct">Full-Funnel Thinking</h3>
+      <p class="why-cd">Most agencies optimize one channel. We engineer the entire customer journey — from first impression to loyal advocate — so growth compounds over time.</p>
+    </div>
+    <div class="why-card gsap-why">
+      <div class="why-n">04</div>
+      <h3 class="why-ct">Relentless Accountability</h3>
+      <p class="why-cd">No vanity metrics. No vague reports. You get transparent dashboards, weekly reviews, and a team that treats your KPIs as their own north star.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ CTA ░░ -->
+<section class="cta-sec" id="contact">
+  <div class="cta-in">
+    <span class="cta-eyebrow gsap-up">Ready to grow?</span>
+    <h2 class="cta-title gsap-up">Let's grow your<br><em>brand.</em></h2>
+    <p class="cta-desc gsap-up">
+      Whether you're launching something new or scaling what you have — we're ready to build something exceptional together.
+    </p>
+    <div class="gsap-up">
+      <a href="mailto:hello@lorphic.com" class="btn-solid">
+        <span>Start the Conversation</span>
+        <svg class="ba" width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ FOOTER ░░ -->
+<footer>
+  <span class="f-logo">Lorph<em>ic</em></span>
+  <p class="f-copy">© 2025 Lorphic. All rights reserved.</p>
+  <ul class="f-links">
+    <li><a href="#">Privacy</a></li>
+    <li><a href="#">Terms</a></li>
+    <li><a href="#">LinkedIn</a></li>
+    <li><a href="#">Instagram</a></li>
+  </ul>
+</footer>
+
+<!-- ░░ GSAP ░░ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<script>
+/* ─── Bootstrap ─── */
+gsap.registerPlugin(ScrollTrigger);
+
+/* ─────────────────────────────────────────
+   CUSTOM CURSOR
+───────────────────────────────────────── */
+const dot  = document.getElementById('cdot');
+const ring = document.getElementById('cring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX;
+  my = e.clientY;
+  gsap.to(dot, { x: mx, y: my, duration: 0.1, ease: 'power1.out' });
+});
+
+(function lerp() {
+  rx += (mx - rx) * 0.1;
+  ry += (my - ry) * 0.1;
+  ring.style.left = rx + 'px';
+  ring.style.top  = ry + 'px';
+  requestAnimationFrame(lerp);
+})();
+
+document.addEventListener('mouseleave', () => gsap.to([dot, ring], { opacity: 0, duration: .3 }));
+document.addEventListener('mouseenter', () => gsap.to([dot, ring], { opacity: 1, duration: .3 }));
+
+document.querySelectorAll('a, button, .srv-card, .why-card').forEach(el => {
+  el.addEventListener('mouseenter', () => ring.classList.add('big'));
+  el.addEventListener('mouseleave', () => ring.classList.remove('big'));
+});
+
+/* ─────────────────────────────────────────
+   NAV SCROLL STATE
+───────────────────────────────────────── */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('stuck', window.scrollY > 60);
+}, { passive: true });
+
+/* ─────────────────────────────────────────
+   HERO — PAGE LOAD SEQUENCE
+───────────────────────────────────────── */
+/* Set all hero elements to their start states before animating */
+gsap.set('#hLabel', { opacity: 0, y: 18 });
+gsap.set('.h1-word', { opacity: 0, y: '115%' });
+gsap.set('#hSub',   { opacity: 0, y: 20 });
+gsap.set('#hBtns',  { opacity: 0, y: 20 });
+gsap.set('#hStats', { opacity: 0, y: 20 });
+gsap.set('#hScroll',{ opacity: 0 });
+
+const hTL = gsap.timeline({ delay: 0.2, defaults: { ease: 'power4.out' } });
+
+hTL
+  .to('#hLabel', { opacity: 1, y: 0, duration: .8 })
+  .to('.h1-word', {
+    opacity: 1, y: 0, duration: 1.05, stagger: .1
+  }, '-=.4')
+  .to('#hSub',  { opacity: 1, y: 0, duration: .8 }, '-=.6')
+  .to('#hBtns', { opacity: 1, y: 0, duration: .75 }, '-=.6')
+  .to('#hStats',{ opacity: 1, y: 0, duration: .7  }, '-=.5')
+  .to('#hScroll',{ opacity: 1, duration: .55 }, '-=.4')
+  .call(() => {
+    document.getElementById('tw').classList.add('ul-on');
+  }, [], '-=.25');
+
+/* ─────────────────────────────────────────
+   SCROLL-TRIGGERED ANIMATIONS
+───────────────────────────────────────── */
+
+/* Generic fade-up blocks */
+gsap.utils.toArray('.gsap-up').forEach(el => {
+  gsap.fromTo(el,
+    { opacity: 0, y: 50 },
+    {
+      opacity: 1, y: 0, duration: .9, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 88%' }
+    }
+  );
+});
+
+/* Service cards — staggered */
+gsap.fromTo('.gsap-card',
+  { opacity: 0, y: 65 },
+  {
+    opacity: 1, y: 0, duration: .9, ease: 'power3.out',
+    stagger: .12,
+    scrollTrigger: { trigger: '.srv-grid', start: 'top 82%' }
+  }
+);
+
+/* Why cards — staggered */
+gsap.fromTo('.gsap-why',
+  { opacity: 0, y: 65 },
+  {
+    opacity: 1, y: 0, duration: .9, ease: 'power3.out',
+    stagger: .14,
+    scrollTrigger: { trigger: '.why-grid', start: 'top 82%' }
+  }
+);
+
+/* Parallax on hero mesh orbs */
+gsap.to('.orb-a', {
+  y: -80,
+  scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1.5 }
+});
+gsap.to('.orb-b', {
+  y: -50,
+  scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 2 }
+});
+
+/* ─────────────────────────────────────────
+   SMOOTH ANCHOR SCROLL
+───────────────────────────────────────── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href');
+    if (!id || id === '#') return;
+    const target = document.querySelector(id);
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+</body>
+</html>
